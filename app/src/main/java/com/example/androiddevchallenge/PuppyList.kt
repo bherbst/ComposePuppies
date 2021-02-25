@@ -1,10 +1,12 @@
 package com.example.androiddevchallenge
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,12 +42,20 @@ import com.example.androiddevchallenge.ui.theme.PuppyTheme
 import com.example.androiddevchallenge.ui.theme.green800
 
 @Composable
-fun PuppyList() {
+fun PuppyList(
+  puppies: List<Puppy>,
+  navigateToPuppyDetails: (Puppy) -> Unit
+) {
   LazyColumn {
-    itemsIndexed(staticPuppies) { index, puppy ->
-      PuppyRow(puppy)
+    itemsIndexed(puppies) { index, puppy ->
+      PuppyRow(
+        puppy = puppy,
+        modifier = Modifier
+          .clickable { navigateToPuppyDetails(puppy) }
+          .fillMaxWidth()
+      )
 
-      if (index < staticPuppies.size - 1) {
+      if (index < puppies.size - 1) {
         Divider()
       }
     }
@@ -53,9 +63,12 @@ fun PuppyList() {
 }
 
 @Composable
-fun PuppyRow(puppy: Puppy) {
+fun PuppyRow(
+  puppy: Puppy,
+  modifier: Modifier = Modifier
+) {
   Row(
-    modifier = Modifier.padding(16.dp)
+    modifier = modifier.padding(16.dp)
   ) {
     // TODO can we take a chomp out of the corner?
     Image(

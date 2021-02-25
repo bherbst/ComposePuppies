@@ -20,6 +20,11 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
+import com.example.androiddevchallenge.data.staticPuppies
 import com.example.androiddevchallenge.ui.theme.PuppyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +32,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PuppyTheme {
-                PuppiesHomeScreen()
+                val navController = rememberNavController()
+                NavHost(navController, startDestination = "home") {
+                    composable("home") {
+                        PuppiesHomeScreen(
+                            puppies = staticPuppies,
+                            navigateToPuppyDetails = { puppy ->
+                                navController.navigate("puppy/${puppy.name}")
+                            }
+                        )
+                    }
+                    composable("puppy/{name}") { backStackEntry ->
+                        val puppyName = backStackEntry.arguments?.getString("name")
+                        val puppy = staticPuppies.find { it.name == puppyName }
+                            ?: throw IllegalStateException("puppy $puppyName not found")
+                        PuppyDetailScreen(puppy)
+                    }
+                }
             }
         }
     }
@@ -37,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun LightPreview() {
     PuppyTheme {
-        PuppiesHomeScreen()
+        PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
     }
 }
 
@@ -45,6 +66,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     PuppyTheme(darkTheme = true) {
-        PuppiesHomeScreen()
+        PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
     }
 }

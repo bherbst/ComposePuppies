@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.data.Puppy
 import com.example.androiddevchallenge.data.staticPuppies
 import com.example.androiddevchallenge.ui.theme.PuppyTheme
 import com.example.androiddevchallenge.ui.theme.teal200
@@ -42,13 +43,23 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PuppiesHomeScreen() {
+fun PuppiesHomeScreen(
+  puppies: List<Puppy>,
+  navigateToPuppyDetails: (Puppy) -> Unit
+) {
   val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
   val scope = rememberCoroutineScope()
 
-  val selectedBreeds = remember { mutableStateOf(listOf<String>()) }
+  // TODO a lot of this could and should be moved out of here
+  val breedFilters = remember { mutableStateOf(listOf<String>()) }
   val breeds = remember {
-    staticPuppies.map { it.breed }.distinct()
+    puppies.map { it.breed }.distinct()
+  }
+
+  val displayPuppies = if (breedFilters.value.isNotEmpty()) {
+    puppies.filter { it.breed in breedFilters.value }
+  } else {
+    puppies
   }
 
   BackdropScaffold(
@@ -68,11 +79,13 @@ fun PuppiesHomeScreen() {
     backLayerContent = {
       PuppyFilters(
         breeds = breeds,
-        selectedBreeds = selectedBreeds.value,
-        onBreedSelectionChanged = { selectedBreeds.value = it } // TODO getValue/setValue
+        selectedBreeds = breedFilters.value,
+        onBreedSelectionChanged = { breedFilters.value = it } // TODO getValue/setValue
       )
     },
-    frontLayerContent = { PuppyList() },
+    frontLayerContent = {
+      PuppyList(displayPuppies, navigateToPuppyDetails)
+    },
   )
 }
 
@@ -191,6 +204,6 @@ val ChipShape = RoundedCornerShape(percent = 50)
 @Composable
 private fun PuppiesHomePreview() {
   PuppyTheme {
-    PuppiesHomeScreen()
+    PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
   }
 }
