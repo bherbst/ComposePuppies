@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.example.androiddevchallenge
 
 import androidx.compose.foundation.BorderStroke
@@ -44,158 +59,158 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PuppiesHomeScreen(
-  puppies: List<Puppy>,
-  navigateToPuppyDetails: (Puppy) -> Unit
+    puppies: List<Puppy>,
+    navigateToPuppyDetails: (Puppy) -> Unit
 ) {
-  val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-  val scope = rememberCoroutineScope()
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    val scope = rememberCoroutineScope()
 
-  // TODO a lot of this could and should be moved out of here
-  val breedFilters = remember { mutableStateOf(listOf<String>()) }
-  val breeds = remember {
-    puppies.map { it.breed }.distinct()
-  }
+    // TODO a lot of this could and should be moved out of here
+    val breedFilters = remember { mutableStateOf(listOf<String>()) }
+    val breeds = remember {
+        puppies.map { it.breed }.distinct()
+    }
 
-  val displayPuppies = if (breedFilters.value.isNotEmpty()) {
-    puppies.filter { it.breed in breedFilters.value }
-  } else {
-    puppies
-  }
+    val displayPuppies = if (breedFilters.value.isNotEmpty()) {
+        puppies.filter { it.breed in breedFilters.value }
+    } else {
+        puppies
+    }
 
-  BackdropScaffold(
-    scaffoldState = scaffoldState,
-    appBar = {
-      PuppiesAppBar(
-        filtersOpen = scaffoldState.isRevealed,
-        toggleFiltersOpen = {
-          if (scaffoldState.isRevealed) {
-            scope.launch { scaffoldState.conceal() }
-          } else {
-            scope.launch { scaffoldState.reveal() }
-          }
-        }
-      )
-    },
-    backLayerContent = {
-      PuppyFilters(
-        breeds = breeds,
-        selectedBreeds = breedFilters.value,
-        onBreedSelectionChanged = { breedFilters.value = it } // TODO getValue/setValue
-      )
-    },
-    frontLayerContent = {
-      PuppyList(displayPuppies, navigateToPuppyDetails)
-    },
-  )
+    BackdropScaffold(
+        scaffoldState = scaffoldState,
+        appBar = {
+            PuppiesAppBar(
+                filtersOpen = scaffoldState.isRevealed,
+                toggleFiltersOpen = {
+                    if (scaffoldState.isRevealed) {
+                        scope.launch { scaffoldState.conceal() }
+                    } else {
+                        scope.launch { scaffoldState.reveal() }
+                    }
+                }
+            )
+        },
+        backLayerContent = {
+            PuppyFilters(
+                breeds = breeds,
+                selectedBreeds = breedFilters.value,
+                onBreedSelectionChanged = { breedFilters.value = it } // TODO getValue/setValue
+            )
+        },
+        frontLayerContent = {
+            PuppyList(displayPuppies, navigateToPuppyDetails)
+        },
+    )
 }
 
 @Composable
 private fun PuppiesAppBar(
-  filtersOpen: Boolean,
-  toggleFiltersOpen: () -> Unit
+    filtersOpen: Boolean,
+    toggleFiltersOpen: () -> Unit
 ) {
-  val icon = when (filtersOpen) {
-    true -> Icons.Filled.Close
-    false -> Icons.Filled.Tune
-  }
-  val description = when (filtersOpen) {
-    true -> "close filters"
-    false -> "open filters"
-  }
-  val title = when (filtersOpen) {
-    true -> "Filters"
-    false -> "Adopt a Puppy"
-  }
-
-  TopAppBar(
-    title = { Text(text = title) },
-    elevation = 0.dp,
-    actions = {
-      IconButton(onClick = { toggleFiltersOpen() }) {
-        Icon(
-          imageVector = icon,
-          contentDescription = description
-        )
-      }
+    val icon = when (filtersOpen) {
+        true -> Icons.Filled.Close
+        false -> Icons.Filled.Tune
     }
-  )
+    val description = when (filtersOpen) {
+        true -> "close filters"
+        false -> "open filters"
+    }
+    val title = when (filtersOpen) {
+        true -> "Filters"
+        false -> "Adopt a Puppy"
+    }
+
+    TopAppBar(
+        title = { Text(text = title) },
+        elevation = 0.dp,
+        actions = {
+            IconButton(onClick = { toggleFiltersOpen() }) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = description
+                )
+            }
+        }
+    )
 }
 
 @Composable
 private fun PuppyFilters(
-  breeds: List<String>,
-  selectedBreeds: List<String>,
-  onBreedSelectionChanged: (List<String>) -> Unit
+    breeds: List<String>,
+    selectedBreeds: List<String>,
+    onBreedSelectionChanged: (List<String>) -> Unit
 ) {
-  Column {
-    Box(Modifier.padding(horizontal = 16.dp)) {
-      Text("Breed: ")
+    Column {
+        Box(Modifier.padding(horizontal = 16.dp)) {
+            Text("Breed: ")
+        }
+        Spacer(Modifier.height(4.dp))
+        BreedChipGroup(
+            breeds = breeds,
+            selectedBreeds = selectedBreeds,
+            onBreedSelectionChanged = onBreedSelectionChanged,
+        )
+        Spacer(Modifier.height(12.dp))
     }
-    Spacer(Modifier.height(4.dp))
-    BreedChipGroup(
-      breeds = breeds,
-      selectedBreeds = selectedBreeds,
-      onBreedSelectionChanged = onBreedSelectionChanged,
-    )
-    Spacer(Modifier.height(12.dp))
-  }
 }
 
 @Composable
 private fun BreedChipGroup(
-  breeds: List<String>,
-  selectedBreeds: List<String>,
-  onBreedSelectionChanged: (List<String>) -> Unit
+    breeds: List<String>,
+    selectedBreeds: List<String>,
+    onBreedSelectionChanged: (List<String>) -> Unit
 ) {
-  LazyRow(
-    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
-  ) {
-    itemsIndexed(breeds) { index, breed ->
-      Chip(
-        text = breed,
-        selected = selectedBreeds.contains(breed),
-        onSelectedChanged = { selected ->
-          if (selected) {
-            onBreedSelectionChanged(selectedBreeds + breed)
-          } else {
-            onBreedSelectionChanged(selectedBreeds - breed)
-          }
-        }
-      )
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
+    ) {
+        itemsIndexed(breeds) { index, breed ->
+            Chip(
+                text = breed,
+                selected = selectedBreeds.contains(breed),
+                onSelectedChanged = { selected ->
+                    if (selected) {
+                        onBreedSelectionChanged(selectedBreeds + breed)
+                    } else {
+                        onBreedSelectionChanged(selectedBreeds - breed)
+                    }
+                }
+            )
 
-      if (index < breeds.size - 1) {
-        Spacer(Modifier.width(8.dp))
-      }
+            if (index < breeds.size - 1) {
+                Spacer(Modifier.width(8.dp))
+            }
+        }
     }
-  }
 }
 
 // TODO extract
 // TODO animate color changes
 @Composable
 private fun Chip(
-  text: String,
-  selected: Boolean,
-  onSelectedChanged: (Boolean) -> Unit
+    text: String,
+    selected: Boolean,
+    onSelectedChanged: (Boolean) -> Unit
 ) {
-  Surface(
-    color = if (selected) blue300 else blue100, //TBD
-    shape = ChipShape,
-    border = if (selected) null else BorderStroke(1.dp, blue300),
-    modifier = Modifier
-      .clip(ChipShape)
-      .selectable(
-        selected = selected,
-        role = Role.Checkbox,
-        onClick = { onSelectedChanged(!selected) }
-      )
-  ) {
-    Text(
-      text = text,
-      style = MaterialTheme.typography.body2,
-      modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-    )
-  }
+    Surface(
+        color = if (selected) blue300 else blue100, // TBD
+        shape = ChipShape,
+        border = if (selected) null else BorderStroke(1.dp, blue300),
+        modifier = Modifier
+            .clip(ChipShape)
+            .selectable(
+                selected = selected,
+                role = Role.Checkbox,
+                onClick = { onSelectedChanged(!selected) }
+            )
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+    }
 }
 
 val ChipShape = RoundedCornerShape(percent = 50)
@@ -203,7 +218,7 @@ val ChipShape = RoundedCornerShape(percent = 50)
 @Preview
 @Composable
 private fun PuppiesHomePreview() {
-  PuppyTheme {
-    PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
-  }
+    PuppyTheme {
+        PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
+    }
 }

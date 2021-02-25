@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.example.androiddevchallenge
 
 import androidx.compose.foundation.Image
@@ -43,111 +58,111 @@ import com.example.androiddevchallenge.ui.theme.green800
 
 @Composable
 fun PuppyList(
-  puppies: List<Puppy>,
-  navigateToPuppyDetails: (Puppy) -> Unit
+    puppies: List<Puppy>,
+    navigateToPuppyDetails: (Puppy) -> Unit
 ) {
-  LazyColumn {
-    itemsIndexed(puppies) { index, puppy ->
-      PuppyRow(
-        puppy = puppy,
-        modifier = Modifier
-          .clickable { navigateToPuppyDetails(puppy) }
-          .fillMaxWidth()
-      )
+    LazyColumn {
+        itemsIndexed(puppies) { index, puppy ->
+            PuppyRow(
+                puppy = puppy,
+                modifier = Modifier
+                    .clickable { navigateToPuppyDetails(puppy) }
+                    .fillMaxWidth()
+            )
 
-      if (index < puppies.size - 1) {
-        Divider()
-      }
+            if (index < puppies.size - 1) {
+                Divider()
+            }
+        }
     }
-  }
 }
 
 @Composable
 fun PuppyRow(
-  puppy: Puppy,
-  modifier: Modifier = Modifier
+    puppy: Puppy,
+    modifier: Modifier = Modifier
 ) {
-  Row(
-    modifier = modifier.padding(16.dp)
-  ) {
-    // TODO can we take a chomp out of the corner?
-    Image(
-      painter = painterResource(puppy.drawableRes),
-      contentDescription = "Image of ${puppy.name}",
-      contentScale = ContentScale.Crop,
-      modifier = Modifier
-        .clip(RoundedCornerShape(8.dp))
-        .size(120.dp)
-    )
-
-    Spacer(Modifier.width(16.dp))
-
-    Column(
-      verticalArrangement = Arrangement.Center
+    Row(
+        modifier = modifier.padding(16.dp)
     ) {
-      Text(
-        text = puppy.name,
-        style = MaterialTheme.typography.subtitle1
-      )
-
-      if (puppy.isGood) {
-        Spacer(Modifier.height(4.dp))
-        PuppyAttribute(
-          icon = Icons.Filled.Verified,
-          text = "Certified Good Doggo",
-          color = green800
+        // TODO can we take a chomp out of the corner?
+        Image(
+            painter = painterResource(puppy.drawableRes),
+            contentDescription = "Image of ${puppy.name}",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .size(120.dp)
         )
-      }
 
-      Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.width(16.dp))
 
-      Row {
-        PuppyAttribute(
-          icon = Icons.Filled.CalendarToday,
-          text = puppy.age
-        )
-        Spacer(Modifier.width(12.dp))
-        PuppyAttribute(
-          icon = Icons.Filled.Pets,
-          text = puppy.breed
-        )
-      }
+        Column(
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = puppy.name,
+                style = MaterialTheme.typography.subtitle1
+            )
+
+            if (puppy.isGood) {
+                Spacer(Modifier.height(4.dp))
+                PuppyAttribute(
+                    icon = Icons.Filled.Verified,
+                    text = "Certified Good Doggo",
+                    color = green800
+                )
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            Row {
+                PuppyAttribute(
+                    icon = Icons.Filled.CalendarToday,
+                    text = puppy.age
+                )
+                Spacer(Modifier.width(12.dp))
+                PuppyAttribute(
+                    icon = Icons.Filled.Pets,
+                    text = puppy.breed
+                )
+            }
+        }
     }
-  }
 }
 
 @Composable
 private fun PuppyAttribute(
-  icon: ImageVector,
-  text: String,
-  color: Color = Color.Unspecified
+    icon: ImageVector,
+    text: String,
+    color: Color = Color.Unspecified
 ) {
-  Row(
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Icon(
-      imageVector = icon,
-      contentDescription = null, // This would just mirror the text
-      tint = color.takeOrElse { LocalContentColor.current.copy(alpha = LocalContentAlpha.current) },
-      modifier = Modifier.size(18.dp)
-    )
-    Spacer(Modifier.width(4.dp))
-    Text(
-      text = text,
-      style = MaterialTheme.typography.caption,
-      color = color
-    )
-  }
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null, // This would just mirror the text
+            tint = color.takeOrElse { LocalContentColor.current.copy(alpha = LocalContentAlpha.current) },
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(Modifier.width(4.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.caption,
+            color = color
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun PuppyRowPreview() {
-  PuppyTheme {
-    Surface(
-      color = MaterialTheme.colors.surface
-    ) {
-      PuppyRow(puppy = staticPuppies.first())
+    PuppyTheme {
+        Surface(
+            color = MaterialTheme.colors.surface
+        ) {
+            PuppyRow(puppy = staticPuppies.first())
+        }
     }
-  }
 }
