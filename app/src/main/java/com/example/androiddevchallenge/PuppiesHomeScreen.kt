@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.data.Puppy
 import com.example.androiddevchallenge.data.staticPuppies
 import com.example.androiddevchallenge.ui.theme.PuppyTheme
-import com.example.androiddevchallenge.ui.theme.teal200
-import com.example.androiddevchallenge.ui.theme.teal600
+import com.example.androiddevchallenge.ui.theme.blue100
+import com.example.androiddevchallenge.ui.theme.blue300
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -179,9 +179,9 @@ private fun Chip(
   onSelectedChanged: (Boolean) -> Unit
 ) {
   Surface(
-    color = if (selected) teal600 else teal200, //TBD
+    color = if (selected) blue300 else blue100, //TBD
     shape = ChipShape,
-    border = if (selected) null else BorderStroke(1.dp, teal600),
+    border = if (selected) null else BorderStroke(1.dp, blue300),
     modifier = Modifier
       .clip(ChipShape)
       .selectable(

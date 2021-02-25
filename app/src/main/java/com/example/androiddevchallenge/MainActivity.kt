@@ -28,44 +28,47 @@ import com.example.androiddevchallenge.data.staticPuppies
 import com.example.androiddevchallenge.ui.theme.PuppyTheme
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PuppyTheme {
-                val navController = rememberNavController()
-                NavHost(navController, startDestination = "home") {
-                    composable("home") {
-                        PuppiesHomeScreen(
-                            puppies = staticPuppies,
-                            navigateToPuppyDetails = { puppy ->
-                                navController.navigate("puppy/${puppy.name}")
-                            }
-                        )
-                    }
-                    composable("puppy/{name}") { backStackEntry ->
-                        val puppyName = backStackEntry.arguments?.getString("name")
-                        val puppy = staticPuppies.find { it.name == puppyName }
-                            ?: throw IllegalStateException("puppy $puppyName not found")
-                        PuppyDetailScreen(puppy)
-                    }
-                }
-            }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContent {
+      PuppyTheme {
+        val navController = rememberNavController()
+        NavHost(navController, startDestination = "home") {
+          composable("home") {
+            PuppiesHomeScreen(
+              puppies = staticPuppies,
+              navigateToPuppyDetails = { puppy ->
+                navController.navigate("puppy/${puppy.name}")
+              }
+            )
+          }
+          composable("puppy/{name}") { backStackEntry ->
+            val puppyName = backStackEntry.arguments?.getString("name")
+            val puppy = staticPuppies.find { it.name == puppyName }
+              ?: throw IllegalStateException("puppy $puppyName not found")
+            PuppyDetailScreen(
+              puppy = puppy,
+              navigateBack = { navController.popBackStack() }
+            )
+          }
         }
+      }
     }
+  }
 }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
 fun LightPreview() {
-    PuppyTheme {
-        PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
-    }
+  PuppyTheme {
+    PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
+  }
 }
 
 @Preview("Dark Theme", widthDp = 360, heightDp = 640)
 @Composable
 fun DarkPreview() {
-    PuppyTheme(darkTheme = true) {
-        PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
-    }
+  PuppyTheme(darkTheme = true) {
+    PuppiesHomeScreen(staticPuppies, navigateToPuppyDetails = {})
+  }
 }

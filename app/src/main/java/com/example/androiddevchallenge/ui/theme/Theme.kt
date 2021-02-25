@@ -22,25 +22,21 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+// TODO this color palette is meh
 private val DarkColorPalette = darkColors(
-    primary = teal200,
-    primaryVariant = teal600,
-    secondary = teal200
+    primary = blue100,
+    primaryVariant = blue300,
+    secondary = green200,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
 )
 
 private val LightColorPalette = lightColors(
-    primary = teal200,
-    primaryVariant = teal600,
-    secondary = teal200,
+    primary = blue100,
+    primaryVariant = blue300,
+    secondary = green200,
     onPrimary = Color.Black,
-
-        /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
     onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
 )
 
 @Composable

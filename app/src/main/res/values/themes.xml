@@ -11,7 +11,7 @@
       -->
     <!-- Base application theme. -->
     <style name="Theme.AndroidDevChallenge" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="android:statusBarColor" tools:targetApi="l">@color/teal_600</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/blue300</item>
     </style>
 
     <style name="Theme.AndroidDevChallenge.NoActionBar">
