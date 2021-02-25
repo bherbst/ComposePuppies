@@ -39,6 +39,7 @@ import com.example.androiddevchallenge.data.staticPuppies
 import com.example.androiddevchallenge.ui.theme.PuppyTheme
 import com.example.androiddevchallenge.ui.theme.blue100
 import com.example.androiddevchallenge.ui.theme.blue300
+import com.example.androiddevchallenge.ui.theme.squareChompShape
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -86,6 +87,7 @@ fun PuppiesHomeScreen(
     frontLayerContent = {
       PuppyList(displayPuppies, navigateToPuppyDetails)
     },
+    frontLayerShape = squareChompShape
   )
 }
 

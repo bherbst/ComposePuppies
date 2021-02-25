@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
@@ -40,6 +39,7 @@ import com.example.androiddevchallenge.data.Puppy
 import com.example.androiddevchallenge.data.staticPuppies
 import com.example.androiddevchallenge.ui.theme.PuppyTheme
 import com.example.androiddevchallenge.ui.theme.green800
+import com.example.androiddevchallenge.ui.theme.roundedChompShape
 
 @Composable
 fun PuppyList(
@@ -76,7 +76,8 @@ fun PuppyRow(
       contentDescription = "Image of ${puppy.name}",
       contentScale = ContentScale.Crop,
       modifier = Modifier
-        .clip(RoundedCornerShape(8.dp))
+//        .clip(RoundedCornerShape(8.dp))
+        .clip(roundedChompShape)
         .size(120.dp)
     )
 
