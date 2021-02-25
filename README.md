@@ -7,3 +7,6 @@ featuring puppies!
 ![List of puppies screenshot](screenshots/puppies_list.png)
 ![Puppy details screenshot](screenshots/puppy_details.png)
 ![GIF of using the app](screenshots/puppies_gif.gif)
+
+#### Credits
+Thanks to https://place-puppy.com/ for the puppy pictures!
